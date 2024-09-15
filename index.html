@@ -1,87 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>Web AR 球體切換示例</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+        <a-marker preset="hiro">
+            <a-entity id="model-container">
+                <a-sphere id="sphere" color="red" radius="0.5" position="0 0.5 0" visible="true"></a-sphere>
+                <a-box id="cube" color="blue" position="0 0.5 0" visible="false"></a-box>
+            </a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            vr-mode-ui="enabled: false;"
-            loading-screen="enabled: false;"
-            renderer="logarithmicDepthBuffer: true;"
-            arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-            id="scene"
-            embedded
-            gesture-detector
-        >
-            <a-assets>
-                <!-- 兩個 GLB 模型資源 -->
-                <a-asset-item id="asset1" src="assets/asset1.glb"></a-asset-item>
-                <a-asset-item id="asset2" src="assets/asset2.glb"></a-asset-item>
-            </a-assets>
+    <div style="position: fixed; bottom: 10px; left: 10px; z-index: 999;">
+        <button id="switchButton" style="padding: 10px;">球體</button>
+    </div>
 
-            <a-marker
-                id="animated-marker"
-                type="pattern"
-                preset="custom"
-                url="assets/marker.patt"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
-            >
-                <!-- 預設顯示 asset1 -->
-                <a-entity
-                    id="model"
-                    scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#asset1"
-                    class="clickable"
-                    gesture-handler
-                ></a-entity>
-            </a-marker>
+    <script>
+        let isSphere = true;
+        const switchButton = document.getElementById('switchButton');
+        const sphere = document.getElementById('sphere');
+        const cube = document.getElementById('cube');
 
-            <a-entity camera></a-entity>
-        </a-scene>
-
-        <!-- 切換按鈕 -->
-        <button style="position: fixed; top: 20px; left: 20px; z-index: 999;" onclick="switchModel()">球體</button>
-
-        <script>
-            var currentModel = 1;
-
-            function switchModel() {
-                var modelEntity = document.getElementById('model');
-                
-                // 清除當前顯示的模型
-                modelEntity.setAttribute('gltf-model', '');
-
-                // 延遲100毫秒，讓清除操作完成後再加載新模型
-                setTimeout(function() {
-                    if (currentModel === 1) {
-                        console.log('切換到 asset2');
-                        modelEntity.setAttribute('gltf-model', '#asset2'); // 切換到 asset2.glb
-                        currentModel = 2;
-                    } else {
-                        console.log('切換到 asset1');
-                        modelEntity.setAttribute('gltf-model', '#asset1'); // 切換回 asset1.glb
-                        currentModel = 1;
-                    }
-
-                    // 加入監控，確認模型是否正確加載
-                    modelEntity.addEventListener('model-loaded', function () {
-                        console.log('模型加載成功');
-                    });
-
-                    modelEntity.addEventListener('model-error', function (evt) {
-                        console.error('模型加載失敗', evt.detail.src);
-                    });
-                }, 100);
+        switchButton.addEventListener('click', function() {
+            if (isSphere) {
+                sphere.setAttribute('visible', 'false');
+                cube.setAttribute('visible', 'true');
+                switchButton.textContent = '立方體';
+            } else {
+                sphere.setAttribute('visible', 'true');
+                cube.setAttribute('visible', 'false');
+                switchButton.textContent = '球體';
             }
-        </script>
-    </body>
+            isSphere = !isSphere;
+        });
+    </script>
+</body>
 </html>
