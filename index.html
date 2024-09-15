@@ -34,7 +34,7 @@
                 cursor="fuse: false; rayOrigin: mouse;"
                 id="markerA"
             >
-                <!-- 預設顯示 asset1 -->
+                <!-- 單一實體用於顯示模型，初始顯示 asset1 -->
                 <a-entity
                     id="model"
                     scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
@@ -57,7 +57,7 @@
 
             // 加入監控，確認模型是否正確加載
             modelEntity.addEventListener('model-loaded', function () {
-                console.log('模型加載成功');
+                console.log('模型加載成功: ' + (currentModel === 1 ? 'asset1' : 'asset2'));
             });
 
             modelEntity.addEventListener('model-error', function (evt) {
@@ -65,6 +65,8 @@
             });
 
             function switchModel() {
+                console.log('開始切換模型...');
+
                 // 清除當前顯示的模型
                 modelEntity.setAttribute('gltf-model', '');
 
@@ -79,7 +81,7 @@
                         modelEntity.setAttribute('gltf-model', '#asset1'); // 切換回 asset1.glb
                         currentModel = 1;
                     }
-                }, 200); // 延遲增加到200毫秒
+                }, 200);
             }
         </script>
     </body>
