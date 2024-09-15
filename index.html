@@ -71,13 +71,17 @@
 
             // 切換圖形功能
             switchButton.addEventListener('click', function() {
+                console.log("Switching models...");
+    
                 // 隱藏 asset1 的模型與標記
                 markerA.setAttribute('visible', 'false');
                 modelA.setAttribute('visible', 'false');
 
                 // 顯示 asset2 的模型
                 modelB.setAttribute('visible', 'true');
+                console.log("Model B is now visible:", modelB.getAttribute('visible'));
             });
+
         </script>
     </body>
 </html>
