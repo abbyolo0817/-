@@ -21,22 +21,22 @@
             <a-assets>
                 <!-- 兩個 GLB 模型資源 -->
                 <a-asset-item id="asset1" src="assets/asset1.glb"></a-asset-item>
-                <a-asset-item id="asset2" src="assets/asset2.glb"></a-asset-item>
+                <a-asset-item id="asset2" src="assets/cube.glb"></a-asset-item>
             </a-assets>
 
+            <!-- 標記 A 綁定 asset1 -->
             <a-marker
-                id="animated-marker"
+                id="markerA"
                 type="pattern"
                 preset="custom"
-                url="assets/marker.patt"
+                url="assets/markerA.patt"  <!-- 這裡綁定 A 標記的模式檔 -->
                 raycaster="objects: .clickable"
                 emitevents="true"
                 cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
             >
-                <!-- 單一實體用於顯示模型，初始顯示 asset1 -->
+                <!-- asset1 模型 -->
                 <a-entity
-                    id="model"
+                    id="modelA"
                     scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
                     animation-mixer="loop: repeat"
                     gltf-model="#asset1"
@@ -45,44 +45,28 @@
                 ></a-entity>
             </a-marker>
 
+            <!-- 標記 B 綁定 asset2 -->
+            <a-marker
+                id="markerB"
+                type="pattern"
+                preset="custom"
+                url="assets/markerB.patt"  <!-- 這裡綁定 B 標記的模式檔 -->
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+            >
+                <!-- asset2 模型 -->
+                <a-entity
+                    id="modelB"
+                    scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
+                    animation-mixer="loop: repeat"
+                    gltf-model="#asset2"
+                    class="clickable"
+                    gesture-handler
+                ></a-entity>
+            </a-marker>
+
             <a-entity camera></a-entity>
         </a-scene>
-
-        <!-- 切換按鈕 -->
-        <button style="position: fixed; top: 20px; left: 20px; z-index: 999;" onclick="switchModel()">球體</button>
-
-        <script>
-            var currentModel = 1;
-            var modelEntity = document.getElementById('model');
-
-            // 加入監控，確認模型是否正確加載
-            modelEntity.addEventListener('model-loaded', function () {
-                console.log('模型加載成功: ' + (currentModel === 1 ? 'asset1' : 'asset2'));
-            });
-
-            modelEntity.addEventListener('model-error', function (evt) {
-                console.error('模型加載失敗', evt.detail.src);
-            });
-
-            function switchModel() {
-                console.log('開始切換模型...');
-
-                // 清除當前顯示的模型
-                modelEntity.setAttribute('gltf-model', '');
-
-                // 延遲200毫秒，讓清除操作完成後再加載新模型
-                setTimeout(function() {
-                    if (currentModel === 1) {
-                        console.log('切換到 asset2');
-                        modelEntity.setAttribute('gltf-model', '#asset2'); // 切換到 asset2.glb
-                        currentModel = 2;
-                    } else {
-                        console.log('切換到 asset1');
-                        modelEntity.setAttribute('gltf-model', '#asset1'); // 切換回 asset1.glb
-                        currentModel = 1;
-                    }
-                }, 800);
-            }
-        </script>
     </body>
 </html>
