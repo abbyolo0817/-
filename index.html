@@ -49,7 +49,7 @@
         </a-scene>
 
         <!-- 切換按鈕 -->
-        <button style="position: fixed; top: 20px; left: 20px; z-index: 999;" onclick="switchModel()">切換圖形</button>
+        <button style="position: fixed; top: 20px; left: 20px; z-index: 999;" onclick="switchModel()">球體</button>
 
         <script>
             var currentModel = 1;
@@ -57,19 +57,30 @@
             function switchModel() {
                 var modelEntity = document.getElementById('model');
                 
-                // 清除當前顯示的模型，避免加載衝突
+                // 清除當前顯示的模型
                 modelEntity.setAttribute('gltf-model', '');
 
-                // 使用延遲來確保模型加載過程順暢
+                // 延遲100毫秒，讓清除操作完成後再加載新模型
                 setTimeout(function() {
                     if (currentModel === 1) {
+                        console.log('切換到 asset2');
                         modelEntity.setAttribute('gltf-model', '#asset2'); // 切換到 asset2.glb
                         currentModel = 2;
                     } else {
+                        console.log('切換到 asset1');
                         modelEntity.setAttribute('gltf-model', '#asset1'); // 切換回 asset1.glb
                         currentModel = 1;
                     }
-                }, 100);  // 小延遲讓清除操作完成
+
+                    // 加入監控，確認模型是否正確加載
+                    modelEntity.addEventListener('model-loaded', function () {
+                        console.log('模型加載成功');
+                    });
+
+                    modelEntity.addEventListener('model-error', function (evt) {
+                        console.error('模型加載失敗', evt.detail.src);
+                    });
+                }, 100);
             }
         </script>
     </body>
