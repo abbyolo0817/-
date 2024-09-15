@@ -29,7 +29,7 @@
                 id="markerA"
                 type="pattern"
                 preset="custom"
-                url="assets/markerA.patt"  <!-- 這裡綁定 A 標記的模式檔 -->
+                url="assets/markerA.patt"
                 raycaster="objects: .clickable"
                 emitevents="true"
                 cursor="fuse: false; rayOrigin: mouse;"
@@ -45,28 +45,39 @@
                 ></a-entity>
             </a-marker>
 
-            <!-- 標記 B 綁定 asset2 -->
-            <a-marker
-                id="markerB"
-                type="pattern"
-                preset="custom"
-                url="assets/markerB.patt"  <!-- 這裡綁定 B 標記的模式檔 -->
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-            >
-                <!-- asset2 模型 -->
-                <a-entity
-                    id="modelB"
-                    scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#asset2"
-                    class="clickable"
-                    gesture-handler
-                ></a-entity>
-            </a-marker>
+            <!-- asset2 模型（初始隱藏，通過按鈕顯示） -->
+            <a-entity
+                id="modelB"
+                position="0 0 -5"  <!-- 設置模型的初始位置 -->
+                scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
+                gltf-model="#asset2"
+                visible="false"  <!-- asset2 初始不可見 -->
+            ></a-entity>
 
             <a-entity camera></a-entity>
         </a-scene>
+
+        <!-- 切換圖形的按鈕 -->
+        <button id="switchButton" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 16px;">
+            切換圖形
+        </button>
+
+        <script>
+            // 取得按鈕與模型的 DOM 物件
+            const switchButton = document.getElementById('switchButton');
+            const modelA = document.getElementById('modelA');
+            const modelB = document.getElementById('modelB');
+            const markerA = document.getElementById('markerA');
+
+            // 切換圖形功能
+            switchButton.addEventListener('click', function() {
+                // 隱藏 asset1 的模型與標記
+                markerA.setAttribute('visible', 'false');
+                modelA.setAttribute('visible', 'false');
+
+                // 顯示 asset2 的模型
+                modelB.setAttribute('visible', 'true');
+            });
+        </script>
     </body>
 </html>
