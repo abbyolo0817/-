@@ -19,10 +19,9 @@
             gesture-detector
         >
             <a-assets>
-                <a-asset-item
-                    id="animated-asset"
-                    src="assets/asset.glb"
-                ></a-asset-item>
+                <!-- 在這裡加入多個 3D 資源 -->
+                <a-asset-item id="asset1" src="assets/asset1.glb"></a-asset-item>
+                <a-asset-item id="asset2" src="assets/asset2.gltf"></a-asset-item>
             </a-assets>
 
             <a-marker
@@ -35,11 +34,12 @@
                 cursor="fuse: false; rayOrigin: mouse;"
                 id="markerA"
             >
+                <!-- 3D 模型實體 -->
                 <a-entity
-                    id="bowser-model"
+                    id="model"
                     scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
                     animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
+                    gltf-model="#asset1" <!-- 預設為第一個模型 -->
                     class="clickable"
                     gesture-handler
                 ></a-entity>
@@ -47,5 +47,23 @@
 
             <a-entity camera></a-entity>
         </a-scene>
+
+        <!-- 新增一個按鈕用來切換模型 -->
+        <button style="position: fixed; top: 20px; left: 20px; z-index: 999;" onclick="switchModel()">切換圖形</button>
+
+        <script>
+            var currentModel = 1;
+
+            function switchModel() {
+                var modelEntity = document.getElementById('model');
+                if (currentModel === 1) {
+                    modelEntity.setAttribute('gltf-model', '#asset2'); // 切換到第二個模型
+                    currentModel = 2;
+                } else {
+                    modelEntity.setAttribute('gltf-model', '#asset1'); // 切換回第一個模型
+                    currentModel = 1;
+                }
+            }
+        </script>
     </body>
 </html>
