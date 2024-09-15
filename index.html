@@ -47,6 +47,7 @@
                 scale="0.5 0.5 0.5"
                 gltf-model="#asset2"
                 visible="false"
+                gesture-handler
             ></a-entity>
 
             <a-entity camera></a-entity>
@@ -58,9 +59,12 @@
 
         <script>
             document.getElementById('switchButton').addEventListener('click', function() {
+                var modelA = document.getElementById('modelA');
                 var modelB = document.getElementById('modelB');
                 var isVisible = modelB.getAttribute('visible');
-                modelB.setAttribute('visible', !isVisible);
+                
+                modelA.setAttribute('visible', isVisible);  // 切換asset1的可見性
+                modelB.setAttribute('visible', !isVisible);  // 切換asset2的可見性
             });
         </script>
     </body>
