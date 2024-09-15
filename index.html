@@ -7,7 +7,6 @@
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
         <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
     </head>
-
     <body style="margin: 0; overflow: hidden;">
         <a-scene
             vr-mode-ui="enabled: false;"
@@ -19,12 +18,10 @@
             gesture-detector
         >
             <a-assets>
-                <!-- 兩個 GLB 模型資源 -->
                 <a-asset-item id="asset1" src="assets/asset1.glb"></a-asset-item>
                 <a-asset-item id="asset2" src="assets/cube.glb"></a-asset-item>
             </a-assets>
 
-            <!-- 標記 A 綁定 asset1 -->
             <a-marker
                 id="markerA"
                 type="pattern"
@@ -34,7 +31,6 @@
                 emitevents="true"
                 cursor="fuse: false; rayOrigin: mouse;"
             >
-                <!-- asset1 模型 -->
                 <a-entity
                     id="modelA"
                     scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
@@ -45,43 +41,27 @@
                 ></a-entity>
             </a-marker>
 
-            <!-- asset2 模型（初始隱藏，通過按鈕顯示） -->
             <a-entity
                 id="modelB"
-                position="0 0 0"  <!-- 設置模型的初始位置 -->
+                position="0 0 0"
                 scale="0.9527481280697024 0.9527481280697024 0.9527481280697024"
                 gltf-model="#asset2"
-                visible="false"  <!-- asset2 初始不可見 -->
+                visible="false"
             ></a-entity>
 
             <a-entity camera></a-entity>
         </a-scene>
 
-        <!-- 切換圖形的按鈕 -->
         <button id="switchButton" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 16px;">
             切換圖形
         </button>
 
         <script>
-            // 取得按鈕與模型的 DOM 物件
-            const switchButton = document.getElementById('switchButton');
-            const modelA = document.getElementById('modelA');
-            const modelB = document.getElementById('modelB');
-            const markerA = document.getElementById('markerA');
-
-            // 切換圖形功能
-            switchButton.addEventListener('click', function() {
-                console.log("Switching models...");
-    
-                // 隱藏 asset1 的模型與標記
-                markerA.setAttribute('visible', 'false');
-                modelA.setAttribute('visible', 'false');
-
-                // 顯示 asset2 的模型
-                modelB.setAttribute('visible', 'true');
-                console.log("Model B is now visible:", modelB.getAttribute('visible'));
+            document.getElementById('switchButton').addEventListener('click', function() {
+                var modelB = document.getElementById('modelB');
+                var isVisible = modelB.getAttribute('visible');
+                modelB.setAttribute('visible', !isVisible);
             });
-
         </script>
     </body>
 </html>
